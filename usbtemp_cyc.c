@@ -44,7 +44,7 @@ struct usbtemp {
 
 static ssize_t usbtemp_kurz_status_show(struct device* dev,
                                     struct device_attribute * attribute,
-                                    char *buf, size_t count)
+                                    char *buf)
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
@@ -57,17 +57,17 @@ static ssize_t usbtemp_kurz_status_show(struct device* dev,
     }
     else{
         usbtemp_dev->supported_probes = usbtemp_dev->ctrl_in_buffer[6] & 0xff;
-        sprintf(buf, "supported probes: %d\n", usbtemp_dev->supported_probes);
+
     }
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return count;
+    return  sprintf(buf, "supported probes: %d\n", usbtemp_dev->supported_probes);
 }
 static SENSOR_DEVICE_ATTR(kurz_status, 0444, usbtemp_kurz_status_show, NULL, 0);
 
 static ssize_t usbtemp_lang_status_show(struct device* dev,
                                     struct device_attribute * attribute,
-                                    char *buf, size_t count)
+                                    char *buf)
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
@@ -87,18 +87,16 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
             usbtemp_dev->temp2 = (usbtemp_dev->ctrl_in_buffer[24] & 0xff) + ((usbtemp_dev->ctrl_in_buffer[25] & 0xff) << 8);
         }
         else pr_err("temp:Sensor 2 nicht vorhanden\n");
-        sprintf(buf, "temp1: %d \n temp2: %d\n", usbtemp_dev->temp1, usbtemp_dev->temp2);
     }
-
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return count;
+    return sprintf(buf, "temp1: %d \n temp2: %d\n", usbtemp_dev->temp1, usbtemp_dev->temp2);
 }
 static SENSOR_DEVICE_ATTR(lang_status, 0444, usbtemp_lang_status_show, NULL, 0);
 
 static ssize_t usbtemp_temp1_show(struct device* dev,
                                     struct device_attribute * attribute,
-                                    char *buf, size_t count)
+                                    char *buf)
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
@@ -114,18 +112,17 @@ static ssize_t usbtemp_temp1_show(struct device* dev,
             usbtemp_dev->temp1 = (usbtemp_dev->ctrl_in_buffer[8] & 0xff) + ((usbtemp_dev->ctrl_in_buffer[9] & 0xff) << 8);
         }
         else pr_err("temp:Sensor 1 nicht vorhanden\n");
-        sprintf(buf, "temp1: %d \n ", usbtemp_dev->temp1);
     }
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return count;
+    return sprintf(buf, "temp1: %d \n ", usbtemp_dev->temp1);
 }
 static SENSOR_DEVICE_ATTR(temp1_input, 0444, usbtemp_temp1_show, NULL, 0);
 
 static ssize_t usbtemp_temp2_show(struct device* dev,
                                     struct device_attribute * attribute,
-                                    char *buf, size_t count)
+                                    char *buf)
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
@@ -141,12 +138,11 @@ static ssize_t usbtemp_temp2_show(struct device* dev,
             usbtemp_dev->temp2 = (usbtemp_dev->ctrl_in_buffer[24] & 0xff) + ((usbtemp_dev->ctrl_in_buffer[25] & 0xff) << 8);
         }
         else pr_err("temp:Sensor 2 nicht vorhanden\n");
-        sprintf(buf, "temp2: %d \n ", usbtemp_dev->temp2);
     }
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return count;
+    return   sprintf(buf, "temp2: %d \n ", usbtemp_dev->temp2);
 }
 static SENSOR_DEVICE_ATTR(temp2_input, 0444, usbtemp_temp2_show, NULL, 0);
 
@@ -162,9 +158,9 @@ static ssize_t usbtemp_rescan_store(struct device* dev,
     // if 1 is passed, rescan temperature sensors
     // and write all values to s_data->tempX
     // up to the number of available temperature sensors
-    ret = kstrtoul(buf, 10, &val);
+    ret = kstrtoul(buf, 10, val);
     if(ret) return ret;
-    if(val == 1){
+    if(*val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
          rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
@@ -194,9 +190,9 @@ static ssize_t usbtemp_reset_store(struct device* dev,
     // if 1 is passed, rescan temperature sensors
     // and write all values to s_data->tempX
     // up to the number of available temperature sensors
-    ret = kstrtoul(buf, 10, &val);
+    ret = kstrtoul(buf, 10, val);
     if(ret) return ret;
-    if(val == 1){
+    if(*val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
          rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
