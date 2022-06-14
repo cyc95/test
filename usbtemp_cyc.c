@@ -45,7 +45,6 @@ struct usbtemp {
 static ssize_t usbtemp_kurz_status_show(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
