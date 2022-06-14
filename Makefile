@@ -1,6 +1,6 @@
 obj-m	:= usbtemp_cyc.o
 
-KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+KERNELDIR ?= /srv/scratch/yua.chen/vm/linux/
 PWD       := $(shell pwd)
 
 all:

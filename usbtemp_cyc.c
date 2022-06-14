@@ -51,12 +51,12 @@ static ssize_t usbtemp_kurz_status_show(struct device* dev,
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_kurz_status, request_type, value, index, buffer, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_kurz_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
     else{
-        usbtemp_dev->supported_probes = temp_dev->ctrl_in_buffer[6] & 0xff;
+        usbtemp_dev->supported_probes = usbtemp_dev->ctrl_in_buffer[6] & 0xff;
         sprintf(buf, "supported probes: %d\n", usbtemp_dev->supported_probes);
     }
     kfree(usbtemp_dev->ctrl_in_buffer);
@@ -68,14 +68,13 @@ static SENSOR_DEVICE_ATTR(kurz_status, 0444, usbtemp_kurz_status_show, NULL, 0);
 static ssize_t usbtemp_lang_status_show(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, buffer, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -100,14 +99,13 @@ static SENSOR_DEVICE_ATTR(lang_status, 0444, usbtemp_lang_status_show, NULL, 0);
 static ssize_t usbtemp_temp1_show(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, buffer, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -128,14 +126,13 @@ static SENSOR_DEVICE_ATTR(temp1_input, 0444, usbtemp_temp1_show, NULL, 0);
 static ssize_t usbtemp_temp2_show(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, buffer, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -156,7 +153,6 @@ static SENSOR_DEVICE_ATTR(temp2_input, 0444, usbtemp_temp2_show, NULL, 0);
 static ssize_t usbtemp_rescan_store(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
 	struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
@@ -170,7 +166,7 @@ static ssize_t usbtemp_rescan_store(struct device* dev,
     if(ret) return ret;
     if(val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, index, buffer, 10000);
+         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
          if(rc < 0){
              pr_err("temp:send rescan-message failed\n");
          }
@@ -188,12 +184,10 @@ static SENSOR_DEVICE_ATTR(rescan, 0200, NULL, usbtemp_rescan_store, 0);
 static ssize_t usbtemp_reset_store(struct device* dev,
                                     struct device_attribute * attribute,
                                     const char *buf, size_t count)
-                                    )
 {
     struct usb_interface *intf = to_usb_interface(dev);
 	struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
     unsigned long * val;
-    unsigned char* buffer;
     int ret;
     int rc;
 
@@ -204,12 +198,12 @@ static ssize_t usbtemp_reset_store(struct device* dev,
     if(ret) return ret;
     if(val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, index, buffer, 10000);
+         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 10000);
          if(rc < 0){
              pr_err("temp:reset failed\n");
          }
          else{
-             pr_info("temp:reset successed\n")
+             pr_info("temp:reset successed\n");
          }
          kfree(usbtemp_dev->ctrl_in_buffer);
     }
