@@ -18,7 +18,7 @@
 #define request_rescan 0x02
 #define request_reset 0x04
 #define value 0x00
-#define index 0x00
+
 
 /* table of devices that work with this driver */
 static struct usb_device_id usbtemp_table[] = {
@@ -51,7 +51,7 @@ static ssize_t usbtemp_kurz_status_show(struct device* dev,
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_kurz_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_kurz_status, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -74,7 +74,7 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -103,7 +103,7 @@ static ssize_t usbtemp_temp1_show(struct device* dev,
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -129,7 +129,7 @@ static ssize_t usbtemp_temp2_show(struct device* dev,
     int rc;
 
     usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
-    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
+    rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
     }
@@ -162,7 +162,7 @@ static ssize_t usbtemp_rescan_store(struct device* dev,
     if(ret) return ret;
     if(*val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
+         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
              pr_err("temp:send rescan-message failed\n");
          }
@@ -194,7 +194,7 @@ static ssize_t usbtemp_reset_store(struct device* dev,
     if(ret) return ret;
     if(*val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
-         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, index, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
+         rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
              pr_err("temp:reset failed\n");
          }
