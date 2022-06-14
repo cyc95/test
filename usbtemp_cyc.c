@@ -152,15 +152,15 @@ static ssize_t usbtemp_rescan_store(struct device* dev,
 {
     struct usb_interface *intf = to_usb_interface(dev);
 	struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
-    unsigned long * val;
+    unsigned long val;
     int ret;
     int rc;
     // if 1 is passed, rescan temperature sensors
     // and write all values to s_data->tempX
     // up to the number of available temperature sensors
-    ret = kstrtoul(buf, 10, val);
+    ret = kstrtoul(buf, 10, &val);
     if(ret) return ret;
-    if(*val == 1){
+    if(val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
          rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_rescan, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
@@ -183,16 +183,16 @@ static ssize_t usbtemp_reset_store(struct device* dev,
 {
     struct usb_interface *intf = to_usb_interface(dev);
 	struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
-    unsigned long * val;
+    unsigned long val;
     int ret;
     int rc;
 
     // if 1 is passed, rescan temperature sensors
     // and write all values to s_data->tempX
     // up to the number of available temperature sensors
-    ret = kstrtoul(buf, 10, val);
+    ret = kstrtoul(buf, 10, &val);
     if(ret) return ret;
-    if(*val == 1){
+    if(val == 1){
          usbtemp_dev->ctrl_in_buffer =  kzalloc(0x08, GFP_KERNEL);
          rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_reset, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x08, 10000);
          if(rc < 0){
