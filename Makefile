@@ -1,4 +1,4 @@
-obj-m	:= usbtemp.o
+obj-m	:= usbtemp_cyc.o
 
 KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 PWD       := $(shell pwd)
