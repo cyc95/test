@@ -90,7 +90,7 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
     }
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return sprintf(buf, "temp1: %d.%04d \n temp2: %d.%04d\n ", usbtemp_dev->temp1 >> 4, usbtemp_dev->temp1 % 16 * 625, usbtemp_dev->temp2 >> 4, usbtemp_dev->temp2 % 16 * 625);
+    return sprintf(buf, "temp1: %d.%04d \ntemp2: %d.%04d\n ", usbtemp_dev->temp1 >> 4, usbtemp_dev->temp1 % 16 * 625, usbtemp_dev->temp2 >> 4, usbtemp_dev->temp2 % 16 * 625);
 }
 static SENSOR_DEVICE_ATTR(lang_status, 0444, usbtemp_lang_status_show, NULL, 0);
 
