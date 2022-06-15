@@ -80,17 +80,17 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
     }
     else{
         if(usbtemp_dev->ctrl_in_buffer[7] & 0x01){
-            usbtemp_dev->temp1 = (usbtemp_dev->ctrl_in_buffer[8] & 0xff) + ((usbtemp_dev->ctrl_in_buffer[9] & 0xff) << 8);
+            usbtemp_dev->temp1 = ((usbtemp_dev->ctrl_in_buffer[8]) & 0xff) + ((usbtemp_dev->ctrl_in_buffer[9] & 0xff) << 8);
         }
         else pr_err("temp:Sensor 1 nicht vorhanden\n");
         if(usbtemp_dev->ctrl_in_buffer[23] & 0x01){
-            usbtemp_dev->temp2 = (usbtemp_dev->ctrl_in_buffer[24] & 0xff) + ((usbtemp_dev->ctrl_in_buffer[25] & 0xff) << 8);
+            usbtemp_dev->temp2 = ((usbtemp_dev->ctrl_in_buffer[24]) & 0xff) + ((usbtemp_dev->ctrl_in_buffer[25] & 0xff) << 8);
         }
         else pr_err("temp:Sensor 2 nicht vorhanden\n");
     }
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return sprintf(buf, "temp1: %d \n temp2: %d\n  %x \n %x  \n %x  \n %x ", usbtemp_dev->temp1, usbtemp_dev->temp2, usbtemp_dev->ctrl_in_buffer[8], usbtemp_dev->ctrl_in_buffer[9], usbtemp_dev->ctrl_in_buffer[24], usbtemp_dev->ctrl_in_buffer[25]);
+    return sprintf(buf, "temp1: %d.%04d \n temp2: %d.%04d\n ", usbtemp_dev->temp1 >> 4, usbtemp_dev->temp1 % 16 * 625, usbtemp_dev->temp2 >> 4, usbtemp_dev->temp2 % 16 * 625);
 }
 static SENSOR_DEVICE_ATTR(lang_status, 0444, usbtemp_lang_status_show, NULL, 0);
 
@@ -116,7 +116,7 @@ static ssize_t usbtemp_temp1_show(struct device* dev,
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return sprintf(buf, "temp1: %d \n ", usbtemp_dev->temp1);
+    return sprintf(buf, "temp1: %d.%04d \n ", usbtemp_dev->temp1 >> 4, usbtemp_dev->temp1 % 16 * 625);
 }
 static SENSOR_DEVICE_ATTR(temp1_input, 0444, usbtemp_temp1_show, NULL, 0);
 
@@ -142,7 +142,7 @@ static ssize_t usbtemp_temp2_show(struct device* dev,
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
-    return   sprintf(buf, "temp2: %d \n ", usbtemp_dev->temp2);
+    return sprintf(buf, "temp2: %d.%04d\n ", usbtemp_dev->temp2 >> 4, usbtemp_dev->temp2 % 16 * 625);
 }
 static SENSOR_DEVICE_ATTR(temp2_input, 0444, usbtemp_temp2_show, NULL, 0);
 
