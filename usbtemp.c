@@ -262,7 +262,7 @@ static int usbtemp_probe(struct usb_interface *interface,
 
     /* save our data pointer in this interface device */
 	usb_set_intfdata(interface, dev);
-    printk(KERN_INFO "probe device register\n");
+    printk(KERN_INFO " probe usbtemp device register\n");
     //Registrieren eines USB-Gerätetreibers im System
 	hwmon_dev = hwmon_device_register_with_groups(&interface->dev,
 							dev->udev->product,
