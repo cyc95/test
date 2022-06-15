@@ -301,7 +301,6 @@ static int __init usbtemp_init(void)
         int result;
 
         /* register this driver with the USB subsystem */
-        printk(KERN_INFO "Hi\n");
         result = usb_register(&usbtemp_driver);
         if (result < 0) {
                 pr_err("usb_register failed for the %s driver. Error number %d\n",
@@ -317,7 +316,6 @@ static void __exit usbtemp_exit(void)
 {
         /* deregister this driver with the USB subsystem */
         usb_deregister(&usbtemp_driver);
-        printk(KERN_INFO "Bye\n");
 }
 
 module_init(usbtemp_init);
