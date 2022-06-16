@@ -226,7 +226,6 @@ ATTRIBUTE_GROUPS(usb_temp);
 static int usbtemp_probe(struct usb_interface *interface,
 		      const struct usb_device_id *id){
     struct usbtemp *dev;
-    struct device *hwmon_dev;
 	struct usb_host_interface *iface_desc;
 	struct usb_endpoint_descriptor *endpoint = NULL;
     bool endpointgefunden = false;
