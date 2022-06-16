@@ -34,11 +34,11 @@ MODULE_DEVICE_TABLE(usb, usbtemp_table);
 struct usbtemp {
 	struct usb_device	*udev;	/* the usb device for this device */
     struct usb_interface	*interface;		/* the interface for this device */
+    struct device *hwmon_dev;
 	unsigned char *ctrl_in_buffer;	/* the buffer to receive data */
     int temp1;
     int temp2;
     int supported_probes;
-	__u8 int_in_endpointAddr;
 };
 
 
@@ -249,7 +249,6 @@ static int usbtemp_probe(struct usb_interface *interface,
 	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
 		endpoint = &iface_desc->endpoint[i].desc;
 		if (usb_endpoint_is_int_in(endpoint)) {
-			dev->int_in_endpointAddr = endpoint->bEndpointAddress;
 			break;
 		}
 	}
@@ -262,9 +261,9 @@ static int usbtemp_probe(struct usb_interface *interface,
 
     /* save our data pointer in this interface device */
 	usb_set_intfdata(interface, dev);
-    printk(KERN_INFO " probe usbtemp device register\n");
+    //printk(KERN_INFO " probe usbtemp device register\n");
     //Registrieren eines USB-Gerätetreibers im System
-	hwmon_dev = hwmon_device_register_with_groups(&interface->dev,
+	dev->hwmon_dev = hwmon_device_register_with_groups(&interface->dev,
 							dev->udev->product,
 							dev, usb_temp_groups);
 	return 0;
@@ -276,7 +275,7 @@ static void usbtemp_disconnect(struct usb_interface *interface)
 
 	dev = usb_get_intfdata(interface);
 
-	hwmon_device_unregister(&interface->dev);
+	hwmon_device_unregister(dev->hwmon_dev);
 
 	usb_set_intfdata(interface, NULL);
 
@@ -284,7 +283,7 @@ static void usbtemp_disconnect(struct usb_interface *interface)
 
 	kfree(dev);
 
-        usb_put_intf(interface);
+    usb_put_intf(interface);
 
 	dev_info(&interface->dev, "USB Temp now disconnected\n");
 
