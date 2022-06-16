@@ -229,7 +229,7 @@ static int usbtemp_probe(struct usb_interface *interface,
     struct device *hwmon_dev;
 	struct usb_host_interface *iface_desc;
 	struct usb_endpoint_descriptor *endpoint = NULL;
-    bool endpointgefunden = Flase;
+    bool endpointgefunden = false;
     int i;
 
 	/* allocate memory for our device state and initialize it */
@@ -250,7 +250,7 @@ static int usbtemp_probe(struct usb_interface *interface,
 	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
 		endpoint = &iface_desc->endpoint[i].desc;
 		if (usb_endpoint_is_int_in(endpoint)) {
-            endpointgefunden = True;
+            endpointgefunden = true;
 			break;
 		}
 	}
