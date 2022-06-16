@@ -229,6 +229,7 @@ static int usbtemp_probe(struct usb_interface *interface,
     struct device *hwmon_dev;
 	struct usb_host_interface *iface_desc;
 	struct usb_endpoint_descriptor *endpoint = NULL;
+    bool falg = Flase;
     int i;
 
 	/* allocate memory for our device state and initialize it */
@@ -249,10 +250,11 @@ static int usbtemp_probe(struct usb_interface *interface,
 	for (i = 0; i < iface_desc->desc.bNumEndpoints; ++i) {
 		endpoint = &iface_desc->endpoint[i].desc;
 		if (usb_endpoint_is_int_in(endpoint)) {
+            flag = True;
 			break;
 		}
 	}
-	if (!dev->int_in_endpointAddr) {
+	if (!flag) {
 		dev_err(&interface->dev, "Could not find int-in endpoint");
         usb_put_intf(interface);
         kfree(dev);
