@@ -59,8 +59,9 @@ static ssize_t usbtemp_kurz_status_show(struct device* dev,
         usbtemp_dev->supported_probes = usbtemp_dev->ctrl_in_buffer[6] & 0xff;
 
     }
-    kfree(usbtemp_dev->ctrl_in_buffer);
 
+    pr_info("usbdata kurz status: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[0], usbtemp_dev->ctrl_in_buffer[1], usbtemp_dev->ctrl_in_buffer[2], usbtemp_dev->ctrl_in_buffer[3], usbtemp_dev->ctrl_in_buffer[4], usbtemp_dev->ctrl_in_buffer[5], usbtemp_dev->ctrl_in_buffer[6], usbtemp_dev->ctrl_in_buffer[7]);
+    kfree(usbtemp_dev->ctrl_in_buffer);
     return  sprintf(buf, "supported probes: %d\n", usbtemp_dev->supported_probes);
 }
 static SENSOR_DEVICE_ATTR(kurz_status, 0444, usbtemp_kurz_status_show, NULL, 0);
@@ -73,7 +74,7 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
     struct usbtemp *usbtemp_dev = usb_get_intfdata(intf);
     int rc;
 
-    usbtemp_dev->ctrl_in_buffer =  kzalloc(0x20, GFP_KERNEL);
+    usbtemp_dev->ctrl_in_buffer =  kzalloc(0x80, GFP_KERNEL);
     rc =  usb_control_msg(usbtemp_dev->udev, usb_rcvctrlpipe(usbtemp_dev->udev,0), request_lang_status, request_type, value, 0x00, usbtemp_dev->ctrl_in_buffer, 0x20, 10000);
     if(rc < 0){
         pr_err("temp:send request-message failed\n");
@@ -88,6 +89,24 @@ static ssize_t usbtemp_lang_status_show(struct device* dev,
         }
         else pr_err("temp:Sensor 2 nicht vorhanden\n");
     }
+
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[0], usbtemp_dev->ctrl_in_buffer[1], usbtemp_dev->ctrl_in_buffer[2], usbtemp_dev->ctrl_in_buffer[3], usbtemp_dev->ctrl_in_buffer[4], usbtemp_dev->ctrl_in_buffer[5], usbtemp_dev->ctrl_in_buffer[6], usbtemp_dev->ctrl_in_buffer[7]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[8], usbtemp_dev->ctrl_in_buffer[9], usbtemp_dev->ctrl_in_buffer[10], usbtemp_dev->ctrl_in_buffer[11], usbtemp_dev->ctrl_in_buffer[12], usbtemp_dev->ctrl_in_buffer[13], usbtemp_dev->ctrl_in_buffer[14], usbtemp_dev->ctrl_in_buffer[15]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[16], usbtemp_dev->ctrl_in_buffer[17], usbtemp_dev->ctrl_in_buffer[18], usbtemp_dev->ctrl_in_buffer[19], usbtemp_dev->ctrl_in_buffer[20], usbtemp_dev->ctrl_in_buffer[21], usbtemp_dev->ctrl_in_buffer[22], usbtemp_dev->ctrl_in_buffer[23]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[24], usbtemp_dev->ctrl_in_buffer[25], usbtemp_dev->ctrl_in_buffer[26], usbtemp_dev->ctrl_in_buffer[27], usbtemp_dev->ctrl_in_buffer[28], usbtemp_dev->ctrl_in_buffer[29], usbtemp_dev->ctrl_in_buffer[30], usbtemp_dev->ctrl_in_buffer[31]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[32], usbtemp_dev->ctrl_in_buffer[33], usbtemp_dev->ctrl_in_buffer[34], usbtemp_dev->ctrl_in_buffer[35], usbtemp_dev->ctrl_in_buffer[36], usbtemp_dev->ctrl_in_buffer[37], usbtemp_dev->ctrl_in_buffer[38], usbtemp_dev->ctrl_in_buffer[39]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[40], usbtemp_dev->ctrl_in_buffer[41], usbtemp_dev->ctrl_in_buffer[42], usbtemp_dev->ctrl_in_buffer[43], usbtemp_dev->ctrl_in_buffer[44], usbtemp_dev->ctrl_in_buffer[45], usbtemp_dev->ctrl_in_buffer[46], usbtemp_dev->ctrl_in_buffer[47]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[48], usbtemp_dev->ctrl_in_buffer[49], usbtemp_dev->ctrl_in_buffer[50], usbtemp_dev->ctrl_in_buffer[51], usbtemp_dev->ctrl_in_buffer[52], usbtemp_dev->ctrl_in_buffer[53], usbtemp_dev->ctrl_in_buffer[54], usbtemp_dev->ctrl_in_buffer[55]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[56], usbtemp_dev->ctrl_in_buffer[57], usbtemp_dev->ctrl_in_buffer[58], usbtemp_dev->ctrl_in_buffer[59], usbtemp_dev->ctrl_in_buffer[60], usbtemp_dev->ctrl_in_buffer[61], usbtemp_dev->ctrl_in_buffer[62], usbtemp_dev->ctrl_in_buffer[63]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[64], usbtemp_dev->ctrl_in_buffer[65], usbtemp_dev->ctrl_in_buffer[66], usbtemp_dev->ctrl_in_buffer[67], usbtemp_dev->ctrl_in_buffer[68], usbtemp_dev->ctrl_in_buffer[69], usbtemp_dev->ctrl_in_buffer[70], usbtemp_dev->ctrl_in_buffer[71]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[72], usbtemp_dev->ctrl_in_buffer[73], usbtemp_dev->ctrl_in_buffer[74], usbtemp_dev->ctrl_in_buffer[75], usbtemp_dev->ctrl_in_buffer[76], usbtemp_dev->ctrl_in_buffer[77], usbtemp_dev->ctrl_in_buffer[78], usbtemp_dev->ctrl_in_buffer[79]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[80], usbtemp_dev->ctrl_in_buffer[81], usbtemp_dev->ctrl_in_buffer[82], usbtemp_dev->ctrl_in_buffer[83], usbtemp_dev->ctrl_in_buffer[84], usbtemp_dev->ctrl_in_buffer[85], usbtemp_dev->ctrl_in_buffer[86], usbtemp_dev->ctrl_in_buffer[87]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[88], usbtemp_dev->ctrl_in_buffer[89], usbtemp_dev->ctrl_in_buffer[90], usbtemp_dev->ctrl_in_buffer[91], usbtemp_dev->ctrl_in_buffer[92], usbtemp_dev->ctrl_in_buffer[93], usbtemp_dev->ctrl_in_buffer[94], usbtemp_dev->ctrl_in_buffer[95]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[96], usbtemp_dev->ctrl_in_buffer[97], usbtemp_dev->ctrl_in_buffer[98], usbtemp_dev->ctrl_in_buffer[99], usbtemp_dev->ctrl_in_buffer[100], usbtemp_dev->ctrl_in_buffer[101], usbtemp_dev->ctrl_in_buffer[102], usbtemp_dev->ctrl_in_buffer[103]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[104], usbtemp_dev->ctrl_in_buffer[105], usbtemp_dev->ctrl_in_buffer[106], usbtemp_dev->ctrl_in_buffer[107], usbtemp_dev->ctrl_in_buffer[108], usbtemp_dev->ctrl_in_buffer[109], usbtemp_dev->ctrl_in_buffer[110], usbtemp_dev->ctrl_in_buffer[111]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[112], usbtemp_dev->ctrl_in_buffer[113], usbtemp_dev->ctrl_in_buffer[114], usbtemp_dev->ctrl_in_buffer[115], usbtemp_dev->ctrl_in_buffer[116], usbtemp_dev->ctrl_in_buffer[117], usbtemp_dev->ctrl_in_buffer[118], usbtemp_dev->ctrl_in_buffer[119]);
+    pr_info("usbdata lange statusg: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[120], usbtemp_dev->ctrl_in_buffer[121], usbtemp_dev->ctrl_in_buffer[122], usbtemp_dev->ctrl_in_buffer[123], usbtemp_dev->ctrl_in_buffer[124], usbtemp_dev->ctrl_in_buffer[125], usbtemp_dev->ctrl_in_buffer[126], usbtemp_dev->ctrl_in_buffer[127]);
+
     kfree(usbtemp_dev->ctrl_in_buffer);
 
     return sprintf(buf, " temp1: %d.%04d \ntemp2: %d.%04d\n ", usbtemp_dev->temp1 >> 4, usbtemp_dev->temp1 % 16 * 625, usbtemp_dev->temp2 >> 4, usbtemp_dev->temp2 % 16 * 625);
@@ -113,6 +132,22 @@ static ssize_t usbtemp_temp1_show(struct device* dev,
         }
         else pr_err("temp:Sensor 1 nicht vorhanden\n");
     }
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[0], usbtemp_dev->ctrl_in_buffer[1], usbtemp_dev->ctrl_in_buffer[2], usbtemp_dev->ctrl_in_buffer[3], usbtemp_dev->ctrl_in_buffer[4], usbtemp_dev->ctrl_in_buffer[5], usbtemp_dev->ctrl_in_buffer[6], usbtemp_dev->ctrl_in_buffer[7]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[8], usbtemp_dev->ctrl_in_buffer[9], usbtemp_dev->ctrl_in_buffer[10], usbtemp_dev->ctrl_in_buffer[11], usbtemp_dev->ctrl_in_buffer[12], usbtemp_dev->ctrl_in_buffer[13], usbtemp_dev->ctrl_in_buffer[14], usbtemp_dev->ctrl_in_buffer[15]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[16], usbtemp_dev->ctrl_in_buffer[17], usbtemp_dev->ctrl_in_buffer[18], usbtemp_dev->ctrl_in_buffer[19], usbtemp_dev->ctrl_in_buffer[20], usbtemp_dev->ctrl_in_buffer[21], usbtemp_dev->ctrl_in_buffer[22], usbtemp_dev->ctrl_in_buffer[23]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[24], usbtemp_dev->ctrl_in_buffer[25], usbtemp_dev->ctrl_in_buffer[26], usbtemp_dev->ctrl_in_buffer[27], usbtemp_dev->ctrl_in_buffer[28], usbtemp_dev->ctrl_in_buffer[29], usbtemp_dev->ctrl_in_buffer[30], usbtemp_dev->ctrl_in_buffer[31]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[32], usbtemp_dev->ctrl_in_buffer[33], usbtemp_dev->ctrl_in_buffer[34], usbtemp_dev->ctrl_in_buffer[35], usbtemp_dev->ctrl_in_buffer[36], usbtemp_dev->ctrl_in_buffer[37], usbtemp_dev->ctrl_in_buffer[38], usbtemp_dev->ctrl_in_buffer[39]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[40], usbtemp_dev->ctrl_in_buffer[41], usbtemp_dev->ctrl_in_buffer[42], usbtemp_dev->ctrl_in_buffer[43], usbtemp_dev->ctrl_in_buffer[44], usbtemp_dev->ctrl_in_buffer[45], usbtemp_dev->ctrl_in_buffer[46], usbtemp_dev->ctrl_in_buffer[47]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[48], usbtemp_dev->ctrl_in_buffer[49], usbtemp_dev->ctrl_in_buffer[50], usbtemp_dev->ctrl_in_buffer[51], usbtemp_dev->ctrl_in_buffer[52], usbtemp_dev->ctrl_in_buffer[53], usbtemp_dev->ctrl_in_buffer[54], usbtemp_dev->ctrl_in_buffer[55]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[56], usbtemp_dev->ctrl_in_buffer[57], usbtemp_dev->ctrl_in_buffer[58], usbtemp_dev->ctrl_in_buffer[59], usbtemp_dev->ctrl_in_buffer[60], usbtemp_dev->ctrl_in_buffer[61], usbtemp_dev->ctrl_in_buffer[62], usbtemp_dev->ctrl_in_buffer[63]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[64], usbtemp_dev->ctrl_in_buffer[65], usbtemp_dev->ctrl_in_buffer[66], usbtemp_dev->ctrl_in_buffer[67], usbtemp_dev->ctrl_in_buffer[68], usbtemp_dev->ctrl_in_buffer[69], usbtemp_dev->ctrl_in_buffer[70], usbtemp_dev->ctrl_in_buffer[71]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[72], usbtemp_dev->ctrl_in_buffer[73], usbtemp_dev->ctrl_in_buffer[74], usbtemp_dev->ctrl_in_buffer[75], usbtemp_dev->ctrl_in_buffer[76], usbtemp_dev->ctrl_in_buffer[77], usbtemp_dev->ctrl_in_buffer[78], usbtemp_dev->ctrl_in_buffer[79]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[80], usbtemp_dev->ctrl_in_buffer[81], usbtemp_dev->ctrl_in_buffer[82], usbtemp_dev->ctrl_in_buffer[83], usbtemp_dev->ctrl_in_buffer[84], usbtemp_dev->ctrl_in_buffer[85], usbtemp_dev->ctrl_in_buffer[86], usbtemp_dev->ctrl_in_buffer[87]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[88], usbtemp_dev->ctrl_in_buffer[89], usbtemp_dev->ctrl_in_buffer[90], usbtemp_dev->ctrl_in_buffer[91], usbtemp_dev->ctrl_in_buffer[92], usbtemp_dev->ctrl_in_buffer[93], usbtemp_dev->ctrl_in_buffer[94], usbtemp_dev->ctrl_in_buffer[95]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[96], usbtemp_dev->ctrl_in_buffer[97], usbtemp_dev->ctrl_in_buffer[98], usbtemp_dev->ctrl_in_buffer[99], usbtemp_dev->ctrl_in_buffer[100], usbtemp_dev->ctrl_in_buffer[101], usbtemp_dev->ctrl_in_buffer[102], usbtemp_dev->ctrl_in_buffer[103]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[104], usbtemp_dev->ctrl_in_buffer[105], usbtemp_dev->ctrl_in_buffer[106], usbtemp_dev->ctrl_in_buffer[107], usbtemp_dev->ctrl_in_buffer[108], usbtemp_dev->ctrl_in_buffer[109], usbtemp_dev->ctrl_in_buffer[110], usbtemp_dev->ctrl_in_buffer[111]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[112], usbtemp_dev->ctrl_in_buffer[113], usbtemp_dev->ctrl_in_buffer[114], usbtemp_dev->ctrl_in_buffer[115], usbtemp_dev->ctrl_in_buffer[116], usbtemp_dev->ctrl_in_buffer[117], usbtemp_dev->ctrl_in_buffer[118], usbtemp_dev->ctrl_in_buffer[119]);
+    pr_info("usbdata lange statusg: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[120], usbtemp_dev->ctrl_in_buffer[121], usbtemp_dev->ctrl_in_buffer[122], usbtemp_dev->ctrl_in_buffer[123], usbtemp_dev->ctrl_in_buffer[124], usbtemp_dev->ctrl_in_buffer[125], usbtemp_dev->ctrl_in_buffer[126], usbtemp_dev->ctrl_in_buffer[127]);
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
@@ -139,6 +174,22 @@ static ssize_t usbtemp_temp2_show(struct device* dev,
         }
         else pr_err("temp:Sensor 2 nicht vorhanden\n");
     }
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[0], usbtemp_dev->ctrl_in_buffer[1], usbtemp_dev->ctrl_in_buffer[2], usbtemp_dev->ctrl_in_buffer[3], usbtemp_dev->ctrl_in_buffer[4], usbtemp_dev->ctrl_in_buffer[5], usbtemp_dev->ctrl_in_buffer[6], usbtemp_dev->ctrl_in_buffer[7]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[8], usbtemp_dev->ctrl_in_buffer[9], usbtemp_dev->ctrl_in_buffer[10], usbtemp_dev->ctrl_in_buffer[11], usbtemp_dev->ctrl_in_buffer[12], usbtemp_dev->ctrl_in_buffer[13], usbtemp_dev->ctrl_in_buffer[14], usbtemp_dev->ctrl_in_buffer[15]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[16], usbtemp_dev->ctrl_in_buffer[17], usbtemp_dev->ctrl_in_buffer[18], usbtemp_dev->ctrl_in_buffer[19], usbtemp_dev->ctrl_in_buffer[20], usbtemp_dev->ctrl_in_buffer[21], usbtemp_dev->ctrl_in_buffer[22], usbtemp_dev->ctrl_in_buffer[23]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[24], usbtemp_dev->ctrl_in_buffer[25], usbtemp_dev->ctrl_in_buffer[26], usbtemp_dev->ctrl_in_buffer[27], usbtemp_dev->ctrl_in_buffer[28], usbtemp_dev->ctrl_in_buffer[29], usbtemp_dev->ctrl_in_buffer[30], usbtemp_dev->ctrl_in_buffer[31]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[32], usbtemp_dev->ctrl_in_buffer[33], usbtemp_dev->ctrl_in_buffer[34], usbtemp_dev->ctrl_in_buffer[35], usbtemp_dev->ctrl_in_buffer[36], usbtemp_dev->ctrl_in_buffer[37], usbtemp_dev->ctrl_in_buffer[38], usbtemp_dev->ctrl_in_buffer[39]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[40], usbtemp_dev->ctrl_in_buffer[41], usbtemp_dev->ctrl_in_buffer[42], usbtemp_dev->ctrl_in_buffer[43], usbtemp_dev->ctrl_in_buffer[44], usbtemp_dev->ctrl_in_buffer[45], usbtemp_dev->ctrl_in_buffer[46], usbtemp_dev->ctrl_in_buffer[47]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[48], usbtemp_dev->ctrl_in_buffer[49], usbtemp_dev->ctrl_in_buffer[50], usbtemp_dev->ctrl_in_buffer[51], usbtemp_dev->ctrl_in_buffer[52], usbtemp_dev->ctrl_in_buffer[53], usbtemp_dev->ctrl_in_buffer[54], usbtemp_dev->ctrl_in_buffer[55]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[56], usbtemp_dev->ctrl_in_buffer[57], usbtemp_dev->ctrl_in_buffer[58], usbtemp_dev->ctrl_in_buffer[59], usbtemp_dev->ctrl_in_buffer[60], usbtemp_dev->ctrl_in_buffer[61], usbtemp_dev->ctrl_in_buffer[62], usbtemp_dev->ctrl_in_buffer[63]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[64], usbtemp_dev->ctrl_in_buffer[65], usbtemp_dev->ctrl_in_buffer[66], usbtemp_dev->ctrl_in_buffer[67], usbtemp_dev->ctrl_in_buffer[68], usbtemp_dev->ctrl_in_buffer[69], usbtemp_dev->ctrl_in_buffer[70], usbtemp_dev->ctrl_in_buffer[71]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[72], usbtemp_dev->ctrl_in_buffer[73], usbtemp_dev->ctrl_in_buffer[74], usbtemp_dev->ctrl_in_buffer[75], usbtemp_dev->ctrl_in_buffer[76], usbtemp_dev->ctrl_in_buffer[77], usbtemp_dev->ctrl_in_buffer[78], usbtemp_dev->ctrl_in_buffer[79]);
+    pr_info("usbdata lange status1: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[80], usbtemp_dev->ctrl_in_buffer[81], usbtemp_dev->ctrl_in_buffer[82], usbtemp_dev->ctrl_in_buffer[83], usbtemp_dev->ctrl_in_buffer[84], usbtemp_dev->ctrl_in_buffer[85], usbtemp_dev->ctrl_in_buffer[86], usbtemp_dev->ctrl_in_buffer[87]);
+    pr_info("usbdata lange status2: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[88], usbtemp_dev->ctrl_in_buffer[89], usbtemp_dev->ctrl_in_buffer[90], usbtemp_dev->ctrl_in_buffer[91], usbtemp_dev->ctrl_in_buffer[92], usbtemp_dev->ctrl_in_buffer[93], usbtemp_dev->ctrl_in_buffer[94], usbtemp_dev->ctrl_in_buffer[95]);
+    pr_info("usbdata lange status3: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[96], usbtemp_dev->ctrl_in_buffer[97], usbtemp_dev->ctrl_in_buffer[98], usbtemp_dev->ctrl_in_buffer[99], usbtemp_dev->ctrl_in_buffer[100], usbtemp_dev->ctrl_in_buffer[101], usbtemp_dev->ctrl_in_buffer[102], usbtemp_dev->ctrl_in_buffer[103]);
+    pr_info("usbdata lange status4: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[104], usbtemp_dev->ctrl_in_buffer[105], usbtemp_dev->ctrl_in_buffer[106], usbtemp_dev->ctrl_in_buffer[107], usbtemp_dev->ctrl_in_buffer[108], usbtemp_dev->ctrl_in_buffer[109], usbtemp_dev->ctrl_in_buffer[110], usbtemp_dev->ctrl_in_buffer[111]);
+    pr_info("usbdata lange status5: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[112], usbtemp_dev->ctrl_in_buffer[113], usbtemp_dev->ctrl_in_buffer[114], usbtemp_dev->ctrl_in_buffer[115], usbtemp_dev->ctrl_in_buffer[116], usbtemp_dev->ctrl_in_buffer[117], usbtemp_dev->ctrl_in_buffer[118], usbtemp_dev->ctrl_in_buffer[119]);
+    pr_info("usbdata lange statusg: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[120], usbtemp_dev->ctrl_in_buffer[121], usbtemp_dev->ctrl_in_buffer[122], usbtemp_dev->ctrl_in_buffer[123], usbtemp_dev->ctrl_in_buffer[124], usbtemp_dev->ctrl_in_buffer[125], usbtemp_dev->ctrl_in_buffer[126], usbtemp_dev->ctrl_in_buffer[127]);
 
     kfree(usbtemp_dev->ctrl_in_buffer);
 
@@ -171,6 +222,8 @@ static ssize_t usbtemp_rescan_store(struct device* dev,
              if( *usbtemp_dev->ctrl_in_buffer == 42) pr_info("temp:rescan failed\n");
              if( *usbtemp_dev->ctrl_in_buffer != 23 &&  *usbtemp_dev->ctrl_in_buffer != 42 ) pr_err("temp:rescan-message answer is wrong\n");
          }
+         pr_info("usbdata rescan: %X %X %X %X %X %X %X %X, %c %c %c %c %c %c %c %c\n", usbtemp_dev->ctrl_in_buffer[0], usbtemp_dev->ctrl_in_buffer[1], usbtemp_dev->ctrl_in_buffer[2], usbtemp_dev->ctrl_in_buffer[3], usbtemp_dev->ctrl_in_buffer[4], usbtemp_dev->ctrl_in_buffer[5], usbtemp_dev->ctrl_in_buffer[6], usbtemp_dev->ctrl_in_buffer[7]);
+
          kfree(usbtemp_dev->ctrl_in_buffer);
     }
     else pr_info("false eingegeben\n");
